@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benim Güzel Aşkıma 💖</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Parisienne&family=Poppins:wght@300;400;600&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffe0ec, #fff6f9);
+      color: #333;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 30px;
+      background-color: rgba(255, 182, 193, 0.6);
+      backdrop-filter: blur(10px);
+      font-size: 30px;
+      font-family: 'Parisienne', cursive;
+      color: #a12c5d;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    .photo {
+      margin: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      overflow: hidden;
+      width: 280px;
+      background-color: white;
+      transition: transform 0.3s ease;
+    }
+
+    .photo:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .caption {
+      padding: 12px;
+      font-size: 16px;
+      font-style: italic;
+      color: #a12c5d;
+    }
+
+    footer {
+      margin: 30px 0;
+      font-size: 14px;
+      color: #a12c5d;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    #intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffb6c1, #fff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 10;
+      font-family: 'Parisienne', cursive;
+      color: #a12c5d;
+      font-size: 42px;
+      opacity: 1;
+      transition: opacity 2s ease;
+    }
+
+    #heartBtn {
+      margin-top: 40px;
+      font-size: 60px;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      user-select: none;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); color: #ff4d6d; }
+      50% { transform: scale(1.3); color: #ff809d; }
+      100% { transform: scale(1); color: #ff4d6d; }
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="intro">
+    <div>İyikimsin güzel kızım 💞</div>
+    <div id="heartBtn">❤️</div>
+  </div>
+
+  <header>💕 Gözlerinin Işığında Kaybolduğum Güzelim 💕</header>
+
+  <div class="gallery">
+    <div class="photo">
+      <img src="images/foto1.jpg" alt="Fotoğraf 1">
+      <div class="caption">Gözlerinin içine bakınca dünya duruyor sanki 💫</div>
+    </div>
+    <div class="photo">
+      <img src="images/foto2.jpg" alt="Fotoğraf 2">
+      <div class="caption">Gülüşünle içim ısınıyor, kalbim seninle doluyor 💖</div>
+    </div>
+    <div class="photo">
+      <img src="images/foto3.jpg" alt="Fotoğraf 3">
+      <div class="caption">Tatlılığınla her anımı güzelleştiriyorsun 🍓</div>
+    </div>
+    <div class="photo">
+      <img src="images/foto4.jpg" alt="Fotoğraf 4">
+      <div class="caption">Her bakışında ayrı bir huzur var 💐</div>
+    </div>
+    <div class="photo">
+      <img src="images/foto5.jpg" alt="Fotoğraf 5">
+      <div class="caption">Seninle her şey daha güzel, daha anlamlı 🌸</div>
+    </div>
+    <div class="photo">
+      <img src="images/foto6.jpg" alt="Fotoğraf 6">
+      <div class="caption">Gözlerinle bile şiir yazılır… ✨</div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="audio/romantik.mp3" type="audio/mpeg">
+  </audio>
+
+  <footer>❤️ Tüm kalbimle, sana... ❤️</footer>
+
+  <script>
+    const intro = document.getElementById('intro');
+    const heart = document.getElementById('heartBtn');
+    const music = document.getElementById('bgMusic');
+
+    heart.addEventListener('click', () => {
+      music.play();
+      intro.style.opacity = '0';
+      setTimeout(() => {
+        intro.style.display = 'none';
+        document.querySelector('header').style.opacity = '1';
+        document.querySelector('.gallery').style.opacity = '1';
+        document.querySelector('footer').style.opacity = '1';
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
