@@ -68,5 +68,151 @@
     }
     @keyframes floatUp{
       from{ transform:translateY(20px) scale(.9); opacity:.0 }
-      t
+      to{ transform:translateY(-120vh) scale(1.4); opacity:.9 }
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0; background:rgba(0,0,0,.6);
+      display:none; align-items:center; justify-content:center; z-index:20;
+    }
+    .lightbox.active{ display:flex }
+    .lightbox img{ max-width:90vw; max-height:80vh; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,.5) }
+    .lb-close, .lb-prev, .lb-next{
+      position:absolute; top:50%; transform:translateY(-50%);
+      background:#ffffff; color:#333; border:none; border-radius:999px; width:44px; height:44px; cursor:pointer; box-shadow:var(--shadow);
+      display:flex; align-items:center; justify-content:center; font-size:20px;
+    }
+    .lb-close{ top:24px; right:24px; transform:none }
+    .lb-prev{ left:24px }
+    .lb-next{ right:24px }
+
+    /* Müzik butonu */
+    .music-btn{
+      position:fixed; right:16px; bottom:16px; z-index:15;
+      width:54px; height:54px; border-radius:999px; border:none; cursor:pointer;
+      background:#ff4d6d; color:#fff; font-size:22px; box-shadow:var(--shadow);
+      display:flex; align-items:center; justify-content:center;
+      transform:scale(0); animation:pop .4s ease forwards 1.2s;
+    }
+    @keyframes pop{to{transform:scale(1)}}
+  </style>
+</head>
+<body>
+  <!-- Uçan kalpler katmanı -->
+  <div class="hearts" aria-hidden="true"></div>
+
+  <!-- Açılış -->
+  <div id="intro">
+    <div>İyikimsin güzel kızım 💞</div>
+    <div id="heartBtn" title="Başlat">❤️</div>
+  </div>
+
+  <header>💕 Gözlerinin Işığında Kaybolduğum Güzelim 💕</header>
+
+  <main class="gallery" id="gallery">
+    <!-- Her img lazy yüklenir ve lightbox için data-index taşır -->
+    <figure class="photo"><div class="img-wrap"><img loading="lazy" src="images/foto1.jpg" alt="Fotoğraf 1" data-index="0"></div><figcaption class="caption">Gözlerinin içine bakınca dünya duruyor sanki 💫</figcaption></figure>
+    <figure class="photo"><div class="img-wrap"><img loading="lazy" src="images/foto2.jpg" alt="Fotoğraf 2" data-index="1"></div><figcaption class="caption">Gülüşünle içim ısınıyor, kalbim seninle doluyor 💖</figcaption></figure>
+    <figure class="photo"><div class="img-wrap"><img loading="lazy" src="images/foto3.jpg" alt="Fotoğraf 3" data-index="2"></div><figcaption class="caption">Tatlılığınla her anımı güzelleştiriyorsun 🍓</figcaption></figure>
+    <figure class="photo"><div class="img-wrap"><img loading="lazy" src="images/foto4.jpg" alt="Fotoğraf 4" data-index="3"></div><figcaption class="caption">Her bakışında ayrı bir huzur var 💐</figcaption></figure>
+    <figure class="photo"><div class="img-wrap"><img loading="lazy" src="images/foto5.jpg" alt="Fotoğraf 5" data-index="4"></div><figcaption class="caption">Seninle her şey daha güzel, daha anlamlı 🌸</figcaption></figure>
+    <figure class="photo"><div class="img-wrap"><img loading="lazy" src="images/foto6.jpg" alt="Fotoğraf 6" data-index="5"></div><figcaption class="caption">Gözlerinle bile şiir yazılır… ✨</figcaption></figure>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <button class="lb-close" id="lbClose" aria-label="Kapat">✕</button>
+    <button class="lb-prev" id="lbPrev" aria-label="Önceki">‹</button>
+    <img id="lbImg" alt="">
+    <button class="lb-next" id="lbNext" aria-label="Sonraki">›</button>
+  </div>
+
+  <!-- Müzik -->
+  <audio id="bgMusic" loop>
+    <source src="audio/romantik.mp3" type="audio/mpeg">
+  </audio>
+  <button class="music-btn" id="musicBtn" title="Müzik çal/durdur">►</button>
+
+  <footer>❤️ Tüm kalbimle, sana... ❤️</footer>
+
+  <script>
+    // Referanslar
+    const intro = document.getElementById('intro');
+    const heart = document.getElementById('heartBtn');
+    const music = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const heartsLayer = document.querySelector('.hearts');
+
+    // Başlatma: kullanıcı kalbe tıklayınca
+    heart.addEventListener('click', () => {
+      try { music.play(); musicBtn.textContent = '⏸'; } catch(e){}
+      intro.style.opacity = '0';
+      setTimeout(() => { intro.style.display = 'none'; }, 800);
+      spawnHearts();
+    });
+
+    // Müzik butonu
+    musicBtn.addEventListener('click', () => {
+      if (music.paused) { music.play(); musicBtn.textContent = '⏸'; }
+      else { music.pause(); musicBtn.textContent = '►'; }
+    });
+
+    // Kalp parçacıkları
+    function spawnHearts(){
+      // ilk anda birkaç tane
+      for(let i=0;i<16;i++) setTimeout(makeHeart, i*90);
+      // düzenli üret
+      setInterval(makeHeart, 1200);
+    }
+    function makeHeart(){
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = Math.random() > .5 ? '❤' : '💖';
+      const left = Math.random()*100;
+      const dur = 6 + Math.random()*5;
+      const size = 12 + Math.random()*16;
+      h.style.left = left + 'vw';
+      h.style.bottom = '-40px';
+      h.style.fontSize = size + 'px';
+      h.style.animationDuration = dur + 's';
+      heartsLayer.appendChild(h);
+      setTimeout(()=>h.remove(), dur*1000);
+    }
+
+    // Lightbox
+    const imgs = Array.from(document.querySelectorAll('.gallery img'));
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
+    const lbPrev = document.getElementById('lbPrev');
+    const lbNext = document.getElementById('lbNext');
+    let current = 0;
+
+    function openLB(i){
+      current = i; updateLB();
+      lb.classList.add('active'); document.body.style.overflow='hidden';
+    }
+    function closeLB(){
+      lb.classList.remove('active'); document.body.style.overflow='';
+    }
+    function updateLB(){ lbImg.src = imgs[current].src; lbImg.alt = imgs[current].alt; }
+    function prev(){ current = (current - 1 + imgs.length) % imgs.length; updateLB(); }
+    function next(){ current = (current + 1) % imgs.length; updateLB(); }
+
+    imgs.forEach(img => img.addEventListener('click', e => openLB(Number(e.target.dataset.index))));
+    lbClose.addEventListener('click', closeLB);
+    lb.addEventListener('click', e => { if(e.target===lb) closeLB(); });
+    lbPrev.addEventListener('click', prev);
+    lbNext.addEventListener('click', next);
+    window.addEventListener('keydown', e => {
+      if(!lb.classList.contains('active')) return;
+      if(e.key==='Escape') closeLB();
+      if(e.key==='ArrowLeft') prev();
+      if(e.key==='ArrowRight') next();
+    });
+  </script>
+</body>
+</html>
+
 
